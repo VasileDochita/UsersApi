@@ -17,27 +17,26 @@ namespace UsersApi.Controllers
                 new User { Id = 1, City = "Iasi", Email = "vasile@whatever.com", Username = "Vasile" },
                 new User { Id = 2, City = "Bucuresti", Email="alexandra@whatever.com", Username = "alexandra"}
             };
+
         // GET api/users
         [Route("")]
         [HttpGet]
-
-        public IActionResult Get()
+        public ActionResult<List<User>> Get()
         {
-            
-            return this.Ok(list) ;
+            return this.Ok(list);
         }
+
         // GET api/users/1
         [Route("{id}")]
         [HttpGet]
-
-        public IActionResult Get(int id)
+        public ActionResult<User> Get(int id)
         {
-            if(id<0)
+            if (id < 0)
             {
                 return this.BadRequest("Id should pbe positive");
             }
             var user = list.FirstOrDefault(x => x.Id == id);
-            if(user == null)
+            if (user == null)
             {
                 return this.NotFound();
 
@@ -48,14 +47,15 @@ namespace UsersApi.Controllers
 
         [Route("")]
         [HttpPost]
-         public IActionResult Create(User model)
+        public IActionResult Create(User model)
         {
             model.Id = list.Count + 1;
 
             list.Add(model);
 
-            return this.CreatedAtAction("Get", new { id = model.Id}, model);
+            return this.CreatedAtAction("Get", new { id = model.Id }, model);
         }
+
         [Route("{id}")]
         [HttpDelete]
         public IActionResult Delete(int id)
@@ -68,9 +68,9 @@ namespace UsersApi.Controllers
             list.Remove(user);
             return this.Ok();
         }
+
         [Route("{id}")]
         [HttpPut]
-
         public IActionResult Update(int id, User model)
         {
             var user = list.FirstOrDefault(x => x.Id == id);
